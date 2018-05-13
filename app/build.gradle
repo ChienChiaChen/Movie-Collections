@@ -48,4 +48,6 @@ dependencies {
 
     compile "com.google.dagger:dagger:${libs.dagger}"// dagger2
     annotationProcessor "com.google.dagger:dagger-compiler:${libs.dagger}" // dagger2
+
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
 }
