@@ -41,4 +41,11 @@ dependencies {
 
     debugCompile "com.readystatesoftware.chuck:library:${libs.chuck}"
     releaseCompile "com.readystatesoftware.chuck:library-no-op:${libs.chuck}"
+
+    compile("com.github.ihsanbal:LoggingInterceptor:${libs.logginInterceptor}") {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    compile "com.google.dagger:dagger:${libs.dagger}"// dagger2
+    annotationProcessor "com.google.dagger:dagger-compiler:${libs.dagger}" // dagger2
 }
