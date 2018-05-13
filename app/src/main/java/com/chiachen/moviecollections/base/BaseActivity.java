@@ -49,7 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return toolbar;
     }
 
-    public ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
 
     public ProgressDialog showProgressDialog() {
         progressDialog = new ProgressDialog(mActivity);
