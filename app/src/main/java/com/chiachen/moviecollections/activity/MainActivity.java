@@ -20,17 +20,21 @@ public class MainActivity extends MVPActivity implements MainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         DaggerMainComponent.builder()
                 .mainModule(new MainModule(this))
                 .netComponent(BaseApplication.get(this).getNetComponent())
-                .build()
-                .inject(this);
+                .build().inject(this);
 
     }
 
     @Override
     protected void initUI() {
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainPresenter.detachView();
     }
 }
