@@ -2,6 +2,7 @@ package com.chiachen.moviecollections.base;
 
 import android.support.annotation.NonNull;
 
+import com.chiachen.moviecollections.network.ApiService;
 import com.chiachen.moviecollections.network.AppSchedulerProvider;
 
 import java.lang.ref.WeakReference;
@@ -14,6 +15,7 @@ import io.reactivex.observers.DisposableObserver;
 public class BasePresenter<V> {
     private WeakReference<V> mView;
     private CompositeDisposable mCompositeDisposable;
+    protected ApiService mApiService;
 
     public void attachView(@NonNull V view) {
         mView = new WeakReference<>(view);
