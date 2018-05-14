@@ -5,6 +5,7 @@ package com.chiachen.moviecollections.network.config;
  */
 
 public interface BaseUrls {
-    String GIT_HUB_BASE_URL = "https://api.github.com/";
-    String OPEN_WEATHER_BASE_URL = "http://api.openweathermap.org";
+    String MOVIE_BASE_URL = "https://api.themoviedb.org";
+    String MOVIE_IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
+
 }
