@@ -44,7 +44,7 @@ public class NetModule {
     public Retrofit provideRetrofit(OkHttpClient okhttpClient) {
         return new Retrofit.Builder()
                 .client(okhttpClient)
-                .baseUrl(BaseUrls.GIT_HUB_BASE_URL)
+                .baseUrl(BaseUrls.MOVIE_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
