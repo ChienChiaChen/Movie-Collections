@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.network.config.BaseUrls;
@@ -16,6 +17,7 @@ import com.chiachen.moviecollections.network.config.BaseUrls;
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {
 
     private MoviesResponse mUpcomingResponse;
+    private ViewOnClickListener mItemOnClickListener;
 
     public HorizontalAdapter(MoviesResponse data) {
         mUpcomingResponse = data;
@@ -28,7 +30,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder,final int position) {
         holder.title.setText(mUpcomingResponse.results.get(position).title);
         // holder.description.setText(mUpcomingResponse.results.get(position).overview);
         holder.pubDate.setText(mUpcomingResponse.results.get(position).releaseDate);
@@ -36,6 +38,24 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
         Glide.with(holder.itemView.getContext())
                 .load(BaseUrls.MOVIE_IMAGE_URL + mUpcomingResponse.results.get(position).posterPath)
                 .into(holder.image);
+
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemOnClickListener.onClickedView(holder, holder.image, getDetailData(position));
+            }
+
+            private DetailFragment.DetailData getDetailData(int position) {
+                DetailFragment.DetailData data = new DetailFragment.DetailData(
+                        mUpcomingResponse.results.get(position).posterPath,
+                        mUpcomingResponse.results.get(position).title,
+                        mUpcomingResponse.results.get(position).overview,
+                        mUpcomingResponse.results.get(position).releaseDate
+                );
+                return data;
+            }
+        });
     }
 
     @Override
@@ -43,11 +63,15 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
         return mUpcomingResponse.results.size();
     }
 
+    public void setItemOnClickListener(ViewOnClickListener itemOnClickListener) {
+        mItemOnClickListener = itemOnClickListener;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView description;
-        TextView pubDate;
-        ImageView image;
+        public TextView title;
+        public TextView description;
+        public TextView pubDate;
+        public ImageView image;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -57,4 +81,6 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
             image = itemView.findViewById(R.id.iv_movie);
         }
     }
+
+
 }

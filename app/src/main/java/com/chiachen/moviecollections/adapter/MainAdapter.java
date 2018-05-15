@@ -23,10 +23,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private MoviesResponse mPopularItems;
     private MoviesResponse mUpcomingItems;
-
-    public MainAdapter(ArrayList<Object> items) {
-        this.mItems = items;
-    }
+    private ViewOnClickListener mItemOnClickListener;
 
     public MainAdapter() {
         mItems = new ArrayList<>();
@@ -106,13 +103,19 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void verticalView(VerticalViewHolder holder) {
         VerticalAdapter adapter = new VerticalAdapter(this.mPopularItems);
+        adapter.setItemOnClickListener(mItemOnClickListener);
         holder.getRecyclerView().setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.getRecyclerView().setAdapter(adapter);
     }
 
     private void horizontalView(HorizontalViewHolder holder) {
         HorizontalAdapter adapter = new HorizontalAdapter(this.mUpcomingItems);
+        adapter.setItemOnClickListener(mItemOnClickListener);
         holder.getRecyclerView().setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
         holder.getRecyclerView().setAdapter(adapter);
+    }
+
+    public void setItemOnClickListener(ViewOnClickListener itemOnClickListener) {
+        mItemOnClickListener = itemOnClickListener;
     }
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.network.config.BaseUrls;
@@ -15,6 +16,7 @@ import com.chiachen.moviecollections.network.config.BaseUrls;
 
 public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyViewHolder> {
     MoviesResponse mPopularResponse;
+    ViewOnClickListener mItemOnClickListener;
 
     public VerticalAdapter(MoviesResponse popularResponse) {
         mPopularResponse = popularResponse;
@@ -27,7 +29,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.title.setText(mPopularResponse.results.get(position).title);
         // holder.description.setText(mPopularResponse.results.get(position).overview);
         holder.pubDate.setText(mPopularResponse.results.get(position).releaseDate);
@@ -35,11 +37,33 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
         Glide.with(holder.itemView.getContext())
                 .load(BaseUrls.MOVIE_IMAGE_URL + mPopularResponse.results.get(position).posterPath)
                 .into(holder.image);
+
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemOnClickListener.onClickedView(holder, holder.image, getDetailData(position));
+            }
+
+            private DetailFragment.DetailData getDetailData(int position) {
+                DetailFragment.DetailData data = new DetailFragment.DetailData(
+                        mPopularResponse.results.get(position).posterPath,
+                        mPopularResponse.results.get(position).title,
+                        mPopularResponse.results.get(position).overview,
+                        mPopularResponse.results.get(position).releaseDate
+                );
+                return data;
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mPopularResponse.results.size();
+    }
+
+    public void setItemOnClickListener(ViewOnClickListener itemOnClickListener) {
+        mItemOnClickListener = itemOnClickListener;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
