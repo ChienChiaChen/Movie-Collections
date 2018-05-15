@@ -29,7 +29,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.title.setText(mPopularResponse.results.get(position).title);
-        holder.description.setText(mPopularResponse.results.get(position).overview);
+        // holder.description.setText(mPopularResponse.results.get(position).overview);
         holder.pubDate.setText(mPopularResponse.results.get(position).releaseDate);
 
         Glide.with(holder.itemView.getContext())
