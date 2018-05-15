@@ -18,8 +18,8 @@ import java.util.ArrayList;
 public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Object> mItems;
-    private static final int VERTICAL = 1;
-    private static final int HORIZONTAL = 2;
+    public static final int HORIZONTAL = 0;
+    public static final int VERTICAL = 1;
 
     private MoviesResponse mPopularItems;
     private MoviesResponse mUpcomingItems;
@@ -28,15 +28,19 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.mItems = items;
     }
 
+    public MainAdapter() {
+        mItems = new ArrayList<>();
+    }
+
     public void setPopularItem(MoviesResponse popularItem) {
         mPopularItems = popularItem;
+        mItems.add(0, mPopularItems);
     }
 
     public void setUpcomingItem(MoviesResponse upcomingItem) {
         mUpcomingItems = upcomingItem;
+        mItems.add(1, mUpcomingItems);
     }
-
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,10 +89,25 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mItems.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        switch (position) {
+            case MainAdapter.HORIZONTAL:{
+                return MainAdapter.HORIZONTAL;
+            }
+            case MainAdapter.VERTICAL:{
+                return MainAdapter.VERTICAL;
+            }
+            default: {
+                return -1;
+            }
+        }
+    }
+
     private void verticalView(VerticalViewHolder holder) {
-        VerticalAdapter adapter1 = new VerticalAdapter(this.mPopularItems);
+        VerticalAdapter adapter = new VerticalAdapter(this.mPopularItems);
         holder.getRecyclerView().setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
-        holder.getRecyclerView().setAdapter(adapter1);
+        holder.getRecyclerView().setAdapter(adapter);
     }
 
     private void horizontalView(HorizontalViewHolder holder) {

@@ -31,7 +31,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         holder.title.setText(mUpcomingResponse.results.get(position).title);
-        holder.description.setText(mUpcomingResponse.results.get(position).overview);
+        // holder.description.setText(mUpcomingResponse.results.get(position).overview);
         holder.pubDate.setText(mUpcomingResponse.results.get(position).releaseDate);
 
         Glide.with(holder.itemView.getContext())

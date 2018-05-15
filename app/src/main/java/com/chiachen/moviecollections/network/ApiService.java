@@ -17,4 +17,8 @@ public interface ApiService {
                                                 @Query("language")String lang,
                                                 @Query("page")String pageIndex);
 
+    @GET("/3/movie/upcoming")
+    Observable<MoviesResponse> getUpcomingMovies(@Query("api_key") String apiKey,
+                                                 @Query("language")String lang,
+                                                 @Query("page")String pageIndex);
 }

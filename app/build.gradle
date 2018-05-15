@@ -13,6 +13,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        buildTypes.each {
+            it.buildConfigField 'String', 'MOVIE_API_KEY', MOVIE_API_KEY
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
