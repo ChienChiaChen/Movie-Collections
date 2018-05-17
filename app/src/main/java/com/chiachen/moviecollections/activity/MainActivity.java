@@ -7,13 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.view.View;
 
-import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.adapter.MainAdapter;
 import com.chiachen.moviecollections.adapter.ViewOnClickListener;
 import com.chiachen.moviecollections.base.MVPActivity;
 import com.chiachen.moviecollections.di.component.DaggerMainComponent;
 import com.chiachen.moviecollections.di.module.MainModule;
+import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.global.BaseApplication;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.presenter.MainPresenter;
@@ -86,8 +86,8 @@ public class MainActivity extends MVPActivity implements MainView {
         if (CollectionUtils.isNullOrEmpty(model)) return;
 
         mMainAdapter.setItemOnClickListener(mViewOnClickListener);
-        mMainAdapter.setPopularItem(model.get(MainAdapter.VERTICAL));
-        mMainAdapter.setUpcomingItem(model.get(MainAdapter.HORIZONTAL));
+        // mMainAdapter.setPopularItem(null);
+        mMainAdapter.setUpcomingItem(model.get(MainAdapter.VERTICAL));
         mMainAdapter.notifyDataSetChanged();
     }
 

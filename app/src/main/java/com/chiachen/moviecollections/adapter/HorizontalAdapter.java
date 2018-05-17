@@ -30,7 +30,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder,final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.title.setText(mUpcomingResponse.results.get(position).title);
         // holder.description.setText(mUpcomingResponse.results.get(position).overview);
         holder.pubDate.setText(mUpcomingResponse.results.get(position).releaseDate);

@@ -45,7 +45,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         return Observable.zip(getPopularListObservable(), getUpcomingListObservable(), new BiFunction<MoviesResponse, MoviesResponse, Map<Integer, MoviesResponse>>() {
                     @Override
                     public Map<Integer, MoviesResponse> apply(MoviesResponse moviesPopularListResponse, MoviesResponse moviesUpcomingListResponse) throws Exception {
-                        mMap.put(MainAdapter.HORIZONTAL, moviesUpcomingListResponse);
+                        // mMap.put(MainAdapter.HORIZONTAL, moviesUpcomingListResponse);
                         mMap.put(MainAdapter.VERTICAL, moviesPopularListResponse);
                         return mMap;
                     }

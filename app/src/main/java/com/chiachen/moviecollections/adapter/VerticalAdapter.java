@@ -12,6 +12,7 @@ import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.network.config.BaseUrls;
+import com.chiachen.moviecollections.utils.CollectionUtils;
 
 
 public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyViewHolder> {
@@ -59,6 +60,9 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
 
     @Override
     public int getItemCount() {
+        if (null == mPopularResponse || CollectionUtils.isNullOrEmpty(mPopularResponse.results)) {
+            return 0;
+        }
         return mPopularResponse.results.size();
     }
 
