@@ -39,7 +39,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
                 .into(holder.image);
 
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mItemOnClickListener.onClickedView(holder, holder.image, getDetailData(position));
