@@ -8,7 +8,7 @@ import dagger.Component;
 
 
 @UserScope
-@Component(modules = MainModule.class, dependencies = NetComponent.class)
+@Component(modules = MainModule.class, dependencies = {NetComponent.class, ApplicationComponent.class})
 public interface MainComponent {
     void inject(MainActivity activity);
 }

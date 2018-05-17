@@ -3,8 +3,11 @@ package com.chiachen.moviecollections.global;
 import android.app.Application;
 import android.content.Context;
 
+import com.chiachen.moviecollections.di.component.ApplicationComponent;
+import com.chiachen.moviecollections.di.component.DaggerApplicationComponent;
 import com.chiachen.moviecollections.di.component.DaggerNetComponent;
 import com.chiachen.moviecollections.di.component.NetComponent;
+import com.chiachen.moviecollections.di.module.ApplicationModule;
 import com.chiachen.moviecollections.di.module.NetModule;
 import com.facebook.stetho.Stetho;
 
@@ -16,6 +19,7 @@ public class BaseApplication extends Application {
 
     private NetComponent netComponent;
     private static BaseApplication sInstance;
+    protected ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
@@ -23,6 +27,7 @@ public class BaseApplication extends Application {
         initResource();
         initNet();
         initStetho();
+        initAppComponent();
     }
 
     private void initStetho() {
@@ -32,14 +37,26 @@ public class BaseApplication extends Application {
                 .build());
     }
 
-    public static BaseApplication get(Context context){
+    public static BaseApplication get(Context context) {
         return (BaseApplication) context.getApplicationContext();
     }
+
     private void initNet() {
         netComponent = DaggerNetComponent
                 .builder()
                 .netModule(new NetModule(this))
                 .build();
+    }
+
+    private void initAppComponent() {
+        applicationComponent = DaggerApplicationComponent
+                .builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
+    }
+
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 
     public NetComponent getNetComponent() {
@@ -52,5 +69,9 @@ public class BaseApplication extends Application {
 
     private void initResource() {
         ResourceService.init(getApplicationContext());
+    }
+
+    public ApplicationComponent getComponent() {
+        return applicationComponent;
     }
 }

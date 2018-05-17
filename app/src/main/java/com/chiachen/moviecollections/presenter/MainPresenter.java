@@ -25,19 +25,14 @@ import io.reactivex.functions.Consumer;
  */
 
 public class MainPresenter extends BasePresenter<MainView> {
-
     private Map<Integer, MoviesResponse> mMap = new HashMap<>();
     private MovieLocalRepo mMovieLocalRepo;
 
-    public MainPresenter setMovieLocalRepo(MovieLocalRepo movieLocalRepo) {
-        mMovieLocalRepo = movieLocalRepo;
-        return this;
-    }
-
     @Inject
-    public MainPresenter(MainView mainView, ApiService apiService) {
+    public MainPresenter(MainView mainView, ApiService apiService, MovieLocalRepo movieLocalRepo) {
         attachView(mainView);
         mApiService = apiService;
+        mMovieLocalRepo = movieLocalRepo;
     }
 
     public void loadMovie() {
