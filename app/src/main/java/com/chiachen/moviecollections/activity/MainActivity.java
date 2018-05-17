@@ -60,7 +60,8 @@ public class MainActivity extends MVPActivity implements MainView {
         DaggerMainComponent.builder()
                 .mainModule(new MainModule(this))
                 .netComponent(BaseApplication.get(this).getNetComponent())
-                .build().inject(this);
+                .build()
+                .inject(this);
 
         mMainPresenter.loadMovie();
     }
