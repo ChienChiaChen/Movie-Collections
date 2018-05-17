@@ -16,7 +16,8 @@ ext {
             stetho_okhttp3      : "1.4.2",
             eventbus            : "3.1.1",
             chuck               : "1.1.0",
-            logginInterceptor   : "2.0.2"
+            logginInterceptor   : "2.0.2",
+            room                : "1.0.0"
     ]
 }
 buildscript {

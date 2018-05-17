@@ -56,5 +56,9 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:${libs.dagger}" // dagger2
     compile "com.github.bumptech.glide:glide:${libs.glide}"
 
+    // Room DB
+    implementation "android.arch.persistence.room:runtime:${libs.room}"
+    annotationProcessor "android.arch.persistence.room:compiler:${libs.room}"
+
     implementation 'org.glassfish:javax.annotation:10.0-b28'
 }
