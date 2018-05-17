@@ -1,5 +1,6 @@
 package com.chiachen.moviecollections.activity;
 
+import android.arch.persistence.room.Room;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,10 @@ import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.adapter.MainAdapter;
 import com.chiachen.moviecollections.adapter.ViewOnClickListener;
 import com.chiachen.moviecollections.base.MVPActivity;
+import com.chiachen.moviecollections.db.DBConfiguration;
+import com.chiachen.moviecollections.db.LocalDB;
+import com.chiachen.moviecollections.db.MovieLocalRepo;
+import com.chiachen.moviecollections.db.MovieLocalRepoImpl;
 import com.chiachen.moviecollections.di.component.DaggerMainComponent;
 import com.chiachen.moviecollections.di.module.MainModule;
 import com.chiachen.moviecollections.fragment.DetailFragment;
@@ -63,6 +68,10 @@ public class MainActivity extends MVPActivity implements MainView {
                 .build()
                 .inject(this);
 
+        LocalDB localDB = Room.databaseBuilder(getApplicationContext(), LocalDB.class, DBConfiguration.DB_NAME).build();
+
+        MovieLocalRepo localRepo = new MovieLocalRepoImpl(localDB.movieDao());
+        mMainPresenter.setMovieLocalRepo(localRepo);
         mMainPresenter.loadMovie();
     }
 

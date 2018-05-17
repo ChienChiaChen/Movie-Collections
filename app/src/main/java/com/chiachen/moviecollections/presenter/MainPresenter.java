@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.chiachen.moviecollections.BuildConfig;
 import com.chiachen.moviecollections.adapter.MainAdapter;
 import com.chiachen.moviecollections.base.BasePresenter;
+import com.chiachen.moviecollections.db.MovieLocalRepo;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.network.ApiCallback;
 import com.chiachen.moviecollections.network.ApiService;
@@ -26,6 +27,12 @@ import io.reactivex.functions.Consumer;
 public class MainPresenter extends BasePresenter<MainView> {
 
     private Map<Integer, MoviesResponse> mMap = new HashMap<>();
+    private MovieLocalRepo mMovieLocalRepo;
+
+    public MainPresenter setMovieLocalRepo(MovieLocalRepo movieLocalRepo) {
+        mMovieLocalRepo = movieLocalRepo;
+        return this;
+    }
 
     @Inject
     public MainPresenter(MainView mainView, ApiService apiService) {
@@ -38,10 +45,10 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().showLoading();
         }
 
-        addSubscription(getMergedObservable(), getObserver());
+        addSubscription(getZipObservable(), getObserver());
     }
 
-    public Observable getMergedObservable() {
+    public Observable getZipObservable() {
         return Observable.zip(getPopularListObservable(), getUpcomingListObservable(), new BiFunction<MoviesResponse, MoviesResponse, Map<Integer, MoviesResponse>>() {
                     @Override
                     public Map<Integer, MoviesResponse> apply(MoviesResponse moviesPopularListResponse, MoviesResponse moviesUpcomingListResponse) throws Exception {
@@ -51,8 +58,9 @@ public class MainPresenter extends BasePresenter<MainView> {
                     }
                 }).doOnNext(new Consumer<Map<Integer, MoviesResponse>>() {
                     @Override
-                    public void accept(Map<Integer, MoviesResponse> integerMoviesResponseMap) throws Exception {
+                    public void accept(Map<Integer, MoviesResponse> moviesResponseMap) throws Exception {
                         //Save to cache;
+                        mMovieLocalRepo.addMovies(moviesResponseMap);
                     }
                 });
     }
