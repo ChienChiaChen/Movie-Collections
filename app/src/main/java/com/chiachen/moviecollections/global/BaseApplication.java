@@ -6,6 +6,7 @@ import android.content.Context;
 import com.chiachen.moviecollections.di.component.DaggerNetComponent;
 import com.chiachen.moviecollections.di.component.NetComponent;
 import com.chiachen.moviecollections.di.module.NetModule;
+import com.facebook.stetho.Stetho;
 
 /**
  * Created by jianjiacheng on 14/05/2018.
@@ -21,6 +22,14 @@ public class BaseApplication extends Application {
         super.onCreate();
         initResource();
         initNet();
+        initStetho();
+    }
+
+    private void initStetho() {
+        Stetho.initialize(Stetho.newInitializerBuilder(this)
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                .build());
     }
 
     public static BaseApplication get(Context context){
