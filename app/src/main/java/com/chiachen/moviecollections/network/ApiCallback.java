@@ -1,5 +1,9 @@
 package com.chiachen.moviecollections.network;
 
+import android.util.Log;
+
+import com.chiachen.moviecollections.network.exception.NoNetworkException;
+
 import io.reactivex.observers.DisposableObserver;
 import retrofit2.HttpException;
 
@@ -30,7 +34,11 @@ public abstract class ApiCallback<M> extends DisposableObserver<M> {
 
     @Override
     public void onError(Throwable e) {
-        if (e instanceof HttpException) {
+        if (e instanceof NoNetworkException) {
+            Log.d("JASON_CHIEN", "\nNoNetworkException");
+            onFailure("Network is unavailable");
+        }else if (e instanceof HttpException) {
+            Log.d("JASON_CHIEN", "\n");
             HttpException httpException = (HttpException) e;
 
             int errCode = httpException.code();
@@ -44,6 +52,7 @@ public abstract class ApiCallback<M> extends DisposableObserver<M> {
 
             onFailure(errMsg);
         } else {
+            Log.d("JASON_CHIEN", "\ngetMessage");
             onFailure(e.getMessage());
         }
 

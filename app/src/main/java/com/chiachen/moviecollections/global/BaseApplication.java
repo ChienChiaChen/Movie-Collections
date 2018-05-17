@@ -29,7 +29,7 @@ public class BaseApplication extends Application {
     private void initNet() {
         netComponent = DaggerNetComponent
                 .builder()
-                .netModule(new NetModule())
+                .netModule(new NetModule(this))
                 .build();
     }
 
