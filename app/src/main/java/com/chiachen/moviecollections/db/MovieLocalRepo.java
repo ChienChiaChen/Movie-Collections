@@ -13,4 +13,6 @@ import java.util.Map;
 public interface MovieLocalRepo {
     void addMovies(List<Movie> items);
     void addMovies(Map<Integer, MoviesResponse> items);
+
+    Map<Integer, MoviesResponse> getMovies();
 }

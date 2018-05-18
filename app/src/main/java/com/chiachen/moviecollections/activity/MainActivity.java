@@ -90,8 +90,16 @@ public class MainActivity extends MVPActivity implements MainView {
     public void notifyAdapter(Map<Integer, MoviesResponse> model) {
         if (CollectionUtils.isNullOrEmpty(model)) return;
 
+        for (Map.Entry<Integer, MoviesResponse> entry : model.entrySet()) {
+            if (CollectionUtils.isNullOrEmpty(entry.getValue().results)){
+                // show
+                showToastInShortTime("Network is unavailable");
+                return;
+            }
+        }
+
         mMainAdapter.setItemOnClickListener(mViewOnClickListener);
-        // mMainAdapter.setPopularItem(null);
+        // mMainAdapter.setPopularItem(null);仔
         mMainAdapter.setUpcomingItem(model.get(MainAdapter.VERTICAL));
         mMainAdapter.notifyDataSetChanged();
     }

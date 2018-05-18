@@ -1,8 +1,10 @@
 package com.chiachen.moviecollections.models;
 
+import com.chiachen.moviecollections.utils.CollectionUtils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,5 +27,13 @@ public class MoviesResponse {
     @SerializedName("total_pages")
     @Expose
     public Integer totalPages;
+
+    public void addResult(Result result) {
+        if (CollectionUtils.isNullOrEmpty(results)) {
+            results = new ArrayList<>();
+        }
+
+        results.add(result);
+    }
 
 }

@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.R;
+import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.models.MoviesResponse;
-import com.chiachen.moviecollections.network.config.BaseUrls;
 import com.chiachen.moviecollections.utils.CollectionUtils;
 
 
@@ -35,9 +33,9 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
         // holder.description.setText(mPopularResponse.results.get(position).overview);
         holder.pubDate.setText(mPopularResponse.results.get(position).releaseDate);
 
-        Glide.with(holder.itemView.getContext())
-                .load(BaseUrls.MOVIE_IMAGE_URL + mPopularResponse.results.get(position).posterPath)
-                .into(holder.image);
+        // Glide.with(holder.itemView.getContext())
+        //         .load(BaseUrls.MOVIE_IMAGE_URL + mPopularResponse.results.get(position).posterPath)
+        //         .into(holder.image);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

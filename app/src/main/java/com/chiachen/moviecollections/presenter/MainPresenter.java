@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Created by jianjiacheng on 14/05/2018.
@@ -40,23 +41,35 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().showLoading();
         }
 
-        addSubscription(getZipObservable(), getObserver());
+        addSubscription(
+                // Observable.mergeDelayError(
+                getZipObservable(),
+                // mMovieLocalRepo.getMovies()),
+                getObserver());
     }
 
     public Observable getZipObservable() {
-        return Observable.zip(getPopularListObservable(), getUpcomingListObservable(), new BiFunction<MoviesResponse, MoviesResponse, Map<Integer, MoviesResponse>>() {
+        return Observable
+                .zip(getPopularListObservable(), getUpcomingListObservable(), new BiFunction<MoviesResponse, MoviesResponse, Map<Integer, MoviesResponse>>() {
                     @Override
                     public Map<Integer, MoviesResponse> apply(MoviesResponse moviesPopularListResponse, MoviesResponse moviesUpcomingListResponse) throws Exception {
                         // mMap.put(MainAdapter.HORIZONTAL, moviesUpcomingListResponse);
                         mMap.put(MainAdapter.VERTICAL, moviesPopularListResponse);
                         return mMap;
                     }
-                }).doOnNext(new Consumer<Map<Integer, MoviesResponse>>() {
+                })
+                .doOnNext(new Consumer<Map<Integer, MoviesResponse>>() {
                     @Override
                     public void accept(Map<Integer, MoviesResponse> moviesResponseMap) throws Exception {
                         //Save to cache;
                         mMovieLocalRepo.addMovies(moviesResponseMap);
                     }
+                })
+                .onErrorReturn(new Function<Throwable, Map<Integer, MoviesResponse>>() {
+                   @Override
+                   public Map<Integer, MoviesResponse> apply(Throwable throwable) throws Exception {
+                       return mMovieLocalRepo.getMovies();
+                   }
                 });
     }
 
