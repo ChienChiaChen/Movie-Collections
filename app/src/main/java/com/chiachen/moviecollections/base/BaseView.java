@@ -7,4 +7,6 @@ package com.chiachen.moviecollections.base;
 public interface BaseView {
     void showLoading();
     void hideLoading();
+    void showToastInShortTime(String msg);
+    void showToastInLongTime(String msg);
 }
