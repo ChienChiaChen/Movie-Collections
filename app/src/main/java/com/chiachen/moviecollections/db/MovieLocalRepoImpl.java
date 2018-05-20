@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Observable;
 
 /**
  * Created by jianjiacheng on 2018/05/17.
@@ -46,17 +49,15 @@ public class MovieLocalRepoImpl implements MovieLocalRepo {
                 movies.add(movie);
             }
         }
-        // Duplicate
 
         addMovies(movies);
     }
 
     @Override
-    public Map<Integer, MoviesResponse> getMovies() {
-    // public Observable<Map<Integer, MoviesResponse>> getMovies() {
-        // return Observable.fromCallable(new Callable<Map<Integer, MoviesResponse>>() {
-        //         @Override
-        //         public Map<Integer, MoviesResponse> call() throws Exception {
+    public Observable<Map<Integer, MoviesResponse>> getMovies() {
+        return Observable.fromCallable(new Callable<Map<Integer, MoviesResponse>>() {
+                @Override
+                public Map<Integer, MoviesResponse> call() throws Exception {
                     List<Movie> movies = mMovieDao.getAll();
                     Map<Integer, MoviesResponse> moviesResponseMap = new HashMap<>();
                     MoviesResponse moviesResponse = new MoviesResponse();
@@ -73,10 +74,8 @@ public class MovieLocalRepoImpl implements MovieLocalRepo {
                             MainAdapter.VERTICAL,
                             moviesResponse
                     );
-            //         return moviesResponseMap;
-        //     }
-        // });
-
-        return moviesResponseMap;
+                    return moviesResponseMap;
+            }
+        });
     }
 }

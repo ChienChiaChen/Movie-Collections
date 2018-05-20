@@ -9,6 +9,7 @@ import com.chiachen.moviecollections.db.MovieLocalRepo;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.network.ApiCallback;
 import com.chiachen.moviecollections.network.ApiService;
+import com.chiachen.moviecollections.network.AppSchedulerProvider;
 import com.chiachen.moviecollections.view.MainView;
 
 import java.util.HashMap;
@@ -19,7 +20,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * Created by jianjiacheng on 14/05/2018.
@@ -41,14 +41,14 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().showLoading();
         }
 
-        addSubscription(
-                // Observable.mergeDelayError(
-                getZipObservable(),
-                // mMovieLocalRepo.getMovies()),
-                getObserver());
+        addSubscription(Observable.mergeDelayError(getDataFromRemote(), getDataFromLocal()), getObserver());
     }
 
-    public Observable getZipObservable() {
+    private Observable<Map<Integer, MoviesResponse>> getDataFromLocal() {
+        return mMovieLocalRepo.getMovies();
+    }
+
+    private Observable getDataFromRemote() {
         return Observable
                 .zip(getPopularListObservable(), getUpcomingListObservable(), new BiFunction<MoviesResponse, MoviesResponse, Map<Integer, MoviesResponse>>() {
                     @Override
@@ -65,12 +65,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                         mMovieLocalRepo.addMovies(moviesResponseMap);
                     }
                 })
-                .onErrorReturn(new Function<Throwable, Map<Integer, MoviesResponse>>() {
-                   @Override
-                   public Map<Integer, MoviesResponse> apply(Throwable throwable) throws Exception {
-                       return mMovieLocalRepo.getMovies();
-                   }
-                });
+                .subscribeOn(AppSchedulerProvider.io());
     }
 
     @NonNull
