@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.models.MoviesResponse;
+import com.chiachen.moviecollections.network.config.BaseUrls;
 
 
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {
@@ -33,9 +35,11 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
         // holder.description.setText(mUpcomingResponse.results.get(position).overview);
         holder.pubDate.setText(mUpcomingResponse.results.get(position).releaseDate);
 
-        // Glide.with(holder.itemView.getContext())
-        //         .load(BaseUrls.MOVIE_IMAGE_URL + mUpcomingResponse.results.get(position).posterPath)
-        //         .into(holder.image);
+        // FIXME: 2018/05/20 Off line
+        // Placeholder
+        Glide.with(holder.itemView.getContext())
+                .load(BaseUrls.MOVIE_IMAGE_URL + mUpcomingResponse.results.get(position).posterPath)
+                .into(holder.image);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -45,13 +49,12 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
             }
 
             private DetailFragment.DetailData getDetailData(int position) {
-                DetailFragment.DetailData data = new DetailFragment.DetailData(
+                return new DetailFragment.DetailData(
                         mUpcomingResponse.results.get(position).posterPath,
                         mUpcomingResponse.results.get(position).title,
                         mUpcomingResponse.results.get(position).overview,
                         mUpcomingResponse.results.get(position).releaseDate
                 );
-                return data;
             }
         });
     }
@@ -79,6 +82,4 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
             image = itemView.findViewById(R.id.iv_movie);
         }
     }
-
-
 }
