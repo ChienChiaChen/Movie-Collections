@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.chiachen.moviecollections.network.exception.NoNetworkException;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import io.reactivex.observers.DisposableObserver;
 import retrofit2.HttpException;
 
@@ -12,9 +14,6 @@ import retrofit2.HttpException;
  */
 
 public abstract class ApiCallback<M> extends DisposableObserver<M> {
-    public static final int NETWORK_ERR = 504;
-    public static final int SERVER_ERR_1 = 502;
-    public static final int SERVER_ERR_2 = 404;
     public static final String NETWORK_ERROR = "Network error";
     public static final String SERVER_ERROR = "Server error";
 
@@ -44,9 +43,9 @@ public abstract class ApiCallback<M> extends DisposableObserver<M> {
             int errCode = httpException.code();
             String errMsg = httpException.message();
 
-            if (NETWORK_ERR == errCode) {
+            if (HttpsURLConnection.HTTP_GATEWAY_TIMEOUT == errCode) {
                 errMsg = ApiCallback.NETWORK_ERROR;
-            } else if (SERVER_ERR_1 == errCode || SERVER_ERR_2 == errCode) {
+            } else if (HttpsURLConnection.HTTP_BAD_GATEWAY == errCode || HttpsURLConnection.HTTP_NOT_FOUND == errCode) {
                 errMsg = ApiCallback.SERVER_ERROR;
             }
 
