@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
+import android.transition.TransitionInflater;
 import android.view.View;
 
 import com.chiachen.moviecollections.R;
@@ -18,12 +19,13 @@ import com.chiachen.moviecollections.global.BaseApplication;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.presenter.MainPresenter;
 import com.chiachen.moviecollections.utils.CollectionUtils;
-import com.chiachen.moviecollections.utils.DetailTransition;
 import com.chiachen.moviecollections.view.MainView;
 
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import static com.chiachen.moviecollections.global.ResourceService.getContext;
 
 public class MainActivity extends MVPActivity implements MainView {
 
@@ -31,13 +33,15 @@ public class MainActivity extends MVPActivity implements MainView {
     private ViewOnClickListener mViewOnClickListener = new ViewOnClickListener() {
         @Override
         public void onClickedView(RecyclerView.ViewHolder holder, View transitionView, DetailFragment.DetailData detailData) {
+            findViewById(R.id.recycler_View).setVisibility(View.INVISIBLE);
+            findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
             DetailFragment detailFragment = DetailFragment.newInstance(detailData);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                detailFragment.setSharedElementEnterTransition(new DetailTransition());
-                // setExitTransition(new Fade());
+                detailFragment.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
                 detailFragment.setEnterTransition(new Fade());
-                detailFragment.setSharedElementReturnTransition(new DetailTransition());
+                detailFragment.setSharedElementReturnTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+                detailFragment.setExitTransition(new Fade());
             }
 
             getSupportFragmentManager()
@@ -46,8 +50,7 @@ public class MainActivity extends MVPActivity implements MainView {
                     .replace(R.id.fragment_container, detailFragment)
                     .commit();
 
-            findViewById(R.id.recycler_View).setVisibility(View.INVISIBLE);
-            findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
+
         }
     };
 
