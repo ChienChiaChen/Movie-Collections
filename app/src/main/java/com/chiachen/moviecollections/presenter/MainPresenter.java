@@ -18,8 +18,10 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Created by jianjiacheng on 14/05/2018.
@@ -41,7 +43,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().showLoading();
         }
 
-        addSubscription(Observable.mergeDelayError(getDataFromRemote(), getDataFromLocal()), getObserver());
+        addSubscription(getDataFromRemote(), getObserver());
     }
 
     private Observable<Map<Integer, MoviesResponse>> getDataFromLocal() {
@@ -65,7 +67,13 @@ public class MainPresenter extends BasePresenter<MainView> {
                         mMovieLocalRepo.addMovies(moviesResponseMap);
                     }
                 })
-                .subscribeOn(AppSchedulerProvider.io());
+                .subscribeOn(AppSchedulerProvider.io())
+                .onErrorResumeNext(new Function<Throwable, ObservableSource< Map<Integer, MoviesResponse>>>() {
+                    @Override
+                    public ObservableSource< Map<Integer, MoviesResponse>> apply(Throwable throwable) throws Exception {
+                        return getDataFromLocal();
+                    }
+                });
     }
 
     @NonNull
