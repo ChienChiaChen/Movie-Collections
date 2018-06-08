@@ -5,8 +5,13 @@ package com.chiachen.moviecollections.base;
  */
 
 public interface BaseView {
-    void showLoading();
-    void hideLoading();
     void showToastInShortTime(String msg);
     void showToastInLongTime(String msg);
+    void showProgressDialog();
+    void showProgressDialog(CharSequence msg);
+    void dismissProgressDialog();
+    void NoNetworkException();
+    void onUnknownError(String errorMessage);
+    void onTimeout();
+    void onNetworkError();
 }
