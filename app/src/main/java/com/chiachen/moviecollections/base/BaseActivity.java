@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.chiachen.moviecollections.R;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements BaseView {
     public Activity mActivity;
 
     @Override
@@ -52,18 +52,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-    public ProgressDialog showProgressDialog() {
+    public void showProgressDialog() {
         progressDialog = new ProgressDialog(mActivity);
         progressDialog.setMessage(getString(R.string.progress_loading));
         progressDialog.show();
-        return progressDialog;
     }
 
-    public ProgressDialog showProgressDialog(CharSequence message) {
+    public void showProgressDialog(CharSequence msg) {
+        dismissProgressDialog();
         progressDialog = new ProgressDialog(mActivity);
-        progressDialog.setMessage(message);
+        progressDialog.setMessage(msg);
         progressDialog.show();
-        return progressDialog;
     }
 
     public void dismissProgressDialog() {
@@ -78,5 +77,25 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void showToastInLongTime(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void NoNetworkException() {
+        showToastInShortTime("NoNetworkException");
+    }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+        showToastInShortTime(errorMessage);
+    }
+
+    @Override
+    public void onTimeout() {
+        showToastInShortTime("onTimeout");
+    }
+
+    @Override
+    public void onNetworkError() {
+        showToastInShortTime("onNetworkError");
     }
 }

@@ -102,19 +102,9 @@ public class MainActivity extends MVPActivity implements MainView {
         }
 
         mMainAdapter.setItemOnClickListener(mViewOnClickListener);
-        // mMainAdapter.setPopularItem(null);仔
+        // mMainAdapter.setPopularItem(null);
         mMainAdapter.setUpcomingItem(model.get(MainAdapter.VERTICAL));
         mMainAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showLoading() {
-        showProgressDialog();
-    }
-
-    @Override
-    public void hideLoading() {
-        dismissProgressDialog();
     }
 
     @Override
