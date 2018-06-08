@@ -40,7 +40,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void loadMovie() {
         if (isViewAttached()) {
-            getView().showLoading();
+            getView().showProgressDialog();
         }
 
         addSubscription(getDataFromRemote(), getObserver());
@@ -78,19 +78,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     @NonNull
     private ApiCallback<Map<Integer, MoviesResponse>> getObserver() {
-        return new ApiCallback<Map<Integer, MoviesResponse>>() {
+        return new ApiCallback<Map<Integer, MoviesResponse>>(getView()) {
             @Override
             public void onSuccess(Map<Integer, MoviesResponse> model) {
                 getView().notifyAdapter(model);
-            }
-
-            @Override
-            public void onFailure(String msg) {
-            }
-
-            @Override
-            public void onFinish() {
-                getView().hideLoading();
             }
         };
     }

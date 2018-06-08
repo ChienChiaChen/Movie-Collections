@@ -1,12 +1,16 @@
 package com.chiachen.moviecollections.network;
 
-import android.util.Log;
-
+import com.chiachen.moviecollections.base.BaseView;
 import com.chiachen.moviecollections.network.exception.NoNetworkException;
 
-import javax.net.ssl.HttpsURLConnection;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.SocketTimeoutException;
 
 import io.reactivex.observers.DisposableObserver;
+import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
 /**
@@ -14,47 +18,50 @@ import retrofit2.HttpException;
  */
 
 public abstract class ApiCallback<M> extends DisposableObserver<M> {
-    public static final String NETWORK_ERROR = "Network error";
-    public static final String SERVER_ERROR = "Server error";
-
+    private WeakReference<BaseView> mWeakReference;
     public abstract void onSuccess(M model);
-    public abstract void onFailure(String msg);
-    public abstract void onFinish();
+
+    public ApiCallback(BaseView baseView) {
+        this.mWeakReference = new WeakReference<>(baseView);
+    }
 
     @Override
     public void onNext(M m) {
         onSuccess(m);
+        BaseView view = mWeakReference.get();
+        if (null != view) {
+            view.dismissProgressDialog();
+        }
     }
 
     @Override
     public void onComplete() {
-        onFinish();
     }
 
     @Override
     public void onError(Throwable e) {
+        BaseView view = mWeakReference.get();
         if (e instanceof NoNetworkException) {
-            Log.d("JASON_CHIEN", "\nNoNetworkException");
-            onFailure("Network is unavailable");
-        }else if (e instanceof HttpException) {
-            Log.d("JASON_CHIEN", "\n");
-            HttpException httpException = (HttpException) e;
-
-            int errCode = httpException.code();
-            String errMsg = httpException.message();
-
-            if (HttpsURLConnection.HTTP_GATEWAY_TIMEOUT == errCode) {
-                errMsg = ApiCallback.NETWORK_ERROR;
-            } else if (HttpsURLConnection.HTTP_BAD_GATEWAY == errCode || HttpsURLConnection.HTTP_NOT_FOUND == errCode) {
-                errMsg = ApiCallback.SERVER_ERROR;
-            }
-
-            onFailure(errMsg);
+            view.NoNetworkException();
+        } else  if (e instanceof HttpException) {
+            ResponseBody responseBody = ((HttpException)e).response().errorBody();
+            view.onUnknownError(getErrorMessage(responseBody));
+        } else if (e instanceof SocketTimeoutException) {
+            view.onTimeout();
+        } else if (e instanceof IOException) {
+            view.onNetworkError();
         } else {
-            Log.d("JASON_CHIEN", "\ngetMessage");
-            onFailure(e.getMessage());
+            view.onUnknownError(e.getMessage());
         }
+        view.dismissProgressDialog();
+    }
 
-        onFinish();
+    private String getErrorMessage(ResponseBody responseBody) {
+        try {
+            JSONObject jsonObject = new JSONObject(responseBody.string());
+            return jsonObject.getString("message");
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }
