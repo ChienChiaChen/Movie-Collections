@@ -1,11 +1,11 @@
 package com.chiachen.moviecollections.activity;
 
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
-import android.transition.TransitionInflater;
 import android.view.View;
 
 import com.chiachen.moviecollections.R;
@@ -13,6 +13,7 @@ import com.chiachen.moviecollections.adapter.MainAdapter;
 import com.chiachen.moviecollections.adapter.ViewOnClickListener;
 import com.chiachen.moviecollections.base.MVPActivity;
 import com.chiachen.moviecollections.di.component.DaggerMainComponent;
+import com.chiachen.moviecollections.di.component.MainComponent;
 import com.chiachen.moviecollections.di.module.MainModule;
 import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.global.BaseApplication;
@@ -25,32 +26,18 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import static com.chiachen.moviecollections.global.ResourceService.getContext;
-
 public class MainActivity extends MVPActivity implements MainView {
+    public static final String TRANSITION_PIC = "transitionPic";
 
     private MainAdapter mMainAdapter;
     private ViewOnClickListener mViewOnClickListener = new ViewOnClickListener() {
         @Override
         public void onClickedView(RecyclerView.ViewHolder holder, View transitionView, DetailFragment.DetailData detailData) {
-            findViewById(R.id.recycler_View).setVisibility(View.INVISIBLE);
-            findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
-            DetailFragment detailFragment = DetailFragment.newInstance(detailData);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                detailFragment.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-                detailFragment.setEnterTransition(new Fade());
-                detailFragment.setSharedElementReturnTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-                detailFragment.setExitTransition(new Fade());
-            }
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .addSharedElement(transitionView, getResources().getString(R.string.image_transition))
-                    .replace(R.id.fragment_container, detailFragment)
-                    .commit();
-
-
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, DetailActivity.class);
+            intent.putExtra("DetailData", detailData);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, transitionView, MainActivity.TRANSITION_PIC);
+            ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
         }
     };
 
@@ -60,17 +47,12 @@ public class MainActivity extends MVPActivity implements MainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DaggerMainComponent.builder()
+       MainComponent component =  DaggerMainComponent.builder()
                 .mainModule(new MainModule(this))
                 .netComponent(BaseApplication.get(this).getNetComponent())
                 .applicationComponent(BaseApplication.get(this).getApplicationComponent())
-                .build()
-                .inject(this);
-
-        // LocalDB localDB = Room.databaseBuilder(getApplicationContext(), LocalDB.class, DBConfiguration.DB_NAME).build();
-
-        // MovieLocalRepo localRepo = new MovieLocalRepoImpl(localDB.movieDao());
-        // mMainPresenter.setMovieLocalRepo(localRepo);
+                .build();
+       component.inject(this);
         mMainPresenter.loadMovie();
     }
 

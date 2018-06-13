@@ -14,6 +14,8 @@ import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.base.MVPFragment;
 import com.chiachen.moviecollections.network.config.BaseUrls;
 
+import java.io.Serializable;
+
 /**
  * Created by jianjiacheng on 15/05/2018.
  */
@@ -78,7 +80,7 @@ public class DetailFragment extends MVPFragment {
 
     }
 
-    public static class DetailData {
+    public static class DetailData implements Serializable {
         private String mImage;
         private String mTitle;
         private String mOverview;
