@@ -12,11 +12,7 @@ import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.adapter.MainAdapter;
 import com.chiachen.moviecollections.adapter.ViewOnClickListener;
 import com.chiachen.moviecollections.base.MVPActivity;
-import com.chiachen.moviecollections.di.component.DaggerMainComponent;
-import com.chiachen.moviecollections.di.component.MainComponent;
-import com.chiachen.moviecollections.di.module.MainModule;
 import com.chiachen.moviecollections.fragment.DetailFragment;
-import com.chiachen.moviecollections.global.BaseApplication;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.presenter.MainPresenter;
 import com.chiachen.moviecollections.utils.CollectionUtils;
@@ -25,6 +21,8 @@ import com.chiachen.moviecollections.view.MainView;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 public class MainActivity extends MVPActivity implements MainView {
     public static final String TRANSITION_PIC = "transitionPic";
@@ -46,13 +44,8 @@ public class MainActivity extends MVPActivity implements MainView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-       MainComponent component =  DaggerMainComponent.builder()
-                .mainModule(new MainModule(this))
-                .netComponent(BaseApplication.get(this).getNetComponent())
-                .applicationComponent(BaseApplication.get(this).getApplicationComponent())
-                .build();
-       component.inject(this);
         mMainPresenter.loadMovie();
     }
 

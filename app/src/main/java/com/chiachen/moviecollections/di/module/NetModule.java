@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.chiachen.moviecollections.global.BaseApplication;
 import com.chiachen.moviecollections.network.ApiService;
 import com.chiachen.moviecollections.network.InterceptorUtil;
 import com.chiachen.moviecollections.network.config.BaseUrls;
@@ -31,17 +32,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetModule {
-    private final Context mContext;
-
-    public NetModule(Context context) {
-        mContext = context;
-    }
 
     @Provides
     @Singleton
-    public boolean IsNetworkConnected( ) {
+    public boolean IsNetworkConnected(BaseApplication baseApplication) {
         try {
-            ConnectivityManager cm = (ConnectivityManager) mContext.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager cm = (ConnectivityManager) baseApplication.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activityNetwork = cm.getActiveNetworkInfo();
             return activityNetwork != null && activityNetwork.isConnectedOrConnecting();
         } catch (Exception e) {
@@ -51,11 +47,11 @@ public class NetModule {
 
     @Provides
     @Singleton
-    public Interceptor provideNetworkCheckerInterceptor() {
+    public Interceptor provideNetworkCheckerInterceptor(final BaseApplication baseApplication) {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                if (IsNetworkConnected()) {
+                if (IsNetworkConnected(baseApplication)) {
                     return chain.proceed(chain.request());
                 } else {
                     throw new NoNetworkException();
@@ -66,11 +62,11 @@ public class NetModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(Interceptor networkInterceptor) {
+    public OkHttpClient provideOkHttpClient(Interceptor networkInterceptor,BaseApplication baseApplication) {
         return new OkHttpClient.Builder()
                 .addInterceptor(InterceptorUtil.getLoggingInterceptor())
                 .addInterceptor(networkInterceptor)
-                .addInterceptor(new ChuckInterceptor(mContext))
+                .addInterceptor(new ChuckInterceptor(baseApplication))
                 .addNetworkInterceptor(InterceptorUtil.getStethoInterceptor())
                 .retryOnConnectionFailure(HttpConfig.NEED_TO_RETRY)
                 .writeTimeout(HttpConfig.DEFAULT_TIMEOUT, TimeUnit.SECONDS)

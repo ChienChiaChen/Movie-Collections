@@ -1,77 +1,57 @@
 package com.chiachen.moviecollections.global;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
-import com.chiachen.moviecollections.di.component.ApplicationComponent;
 import com.chiachen.moviecollections.di.component.DaggerApplicationComponent;
-import com.chiachen.moviecollections.di.component.DaggerNetComponent;
-import com.chiachen.moviecollections.di.component.NetComponent;
-import com.chiachen.moviecollections.di.module.ApplicationModule;
-import com.chiachen.moviecollections.di.module.NetModule;
 import com.facebook.stetho.Stetho;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 
 /**
  * Created by jianjiacheng on 14/05/2018.
  */
 
-public class BaseApplication extends Application {
+public class BaseApplication extends Application implements HasActivityInjector {
 
-    private NetComponent netComponent;
-    private static BaseApplication sInstance;
-    protected ApplicationComponent applicationComponent;
+    @Inject
+    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return activityDispatchingAndroidInjector;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         initResource();
-        initNet();
         initStetho();
         initAppComponent();
     }
 
     private void initStetho() {
-        Stetho.initialize(Stetho.newInitializerBuilder(this)
-                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                .build());
+        Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
     }
 
     public static BaseApplication get(Context context) {
         return (BaseApplication) context.getApplicationContext();
     }
 
-    private void initNet() {
-        netComponent = DaggerNetComponent
-                .builder()
-                .netModule(new NetModule(this))
-                .build();
-    }
-
     private void initAppComponent() {
-        applicationComponent = DaggerApplicationComponent
+        DaggerApplicationComponent
                 .builder()
-                .applicationModule(new ApplicationModule(this))
-                .build();
-    }
-
-    public ApplicationComponent getApplicationComponent() {
-        return applicationComponent;
-    }
-
-    public NetComponent getNetComponent() {
-        return netComponent;
-    }
-
-    public static BaseApplication getInstance() {
-        return sInstance;
+                .application(this)
+                .build()
+                .inject(this);
     }
 
     private void initResource() {
         ResourceService.init(getApplicationContext());
-    }
-
-    public ApplicationComponent getComponent() {
-        return applicationComponent;
     }
 }
