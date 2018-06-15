@@ -8,12 +8,20 @@
     android:layout_height="match_parent"
     tools:context="com.chiachen.moviecollections.activity.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_View"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ccc"
-        android:visibility="visible"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_View"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ccc"
+            android:visibility="visible"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <FrameLayout
         android:id="@+id/fragment_container"

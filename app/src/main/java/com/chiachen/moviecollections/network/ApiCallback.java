@@ -30,7 +30,7 @@ public abstract class ApiCallback<M> extends DisposableObserver<M> {
         onSuccess(m);
         BaseView view = mWeakReference.get();
         if (null != view) {
-            view.dismissProgressDialog();
+            view.dismissRefreshing();
         }
     }
 
@@ -53,7 +53,7 @@ public abstract class ApiCallback<M> extends DisposableObserver<M> {
         } else {
             view.onUnknownError(e.getMessage());
         }
-        view.dismissProgressDialog();
+        view.dismissRefreshing();
     }
 
     private String getErrorMessage(ResponseBody responseBody) {

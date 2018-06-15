@@ -14,4 +14,7 @@ public interface BaseView {
     void onUnknownError(String errorMessage);
     void onTimeout();
     void onNetworkError();
+
+    void dismissRefreshing();
+    void showRefreshing();
 }

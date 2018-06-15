@@ -14,6 +14,7 @@ import com.chiachen.moviecollections.view.MainView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -40,7 +41,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void loadMovie() {
         if (isViewAttached()) {
-            getView().showProgressDialog();
+            getView().showRefreshing();
         }
 
         addSubscription(getDataFromRemote(), getObserver());
@@ -67,6 +68,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                         mMovieLocalRepo.addMovies(moviesResponseMap);
                     }
                 })
+                .delay(2, TimeUnit.SECONDS)
                 .subscribeOn(AppSchedulerProvider.io())
                 .onErrorResumeNext(new Function<Throwable, ObservableSource< Map<Integer, MoviesResponse>>>() {
                     @Override

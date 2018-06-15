@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -28,6 +29,8 @@ public class MainActivity extends MVPActivity implements MainView {
     public static final String TRANSITION_PIC = "transitionPic";
 
     private MainAdapter mMainAdapter;
+    private SwipeRefreshLayout mRefreshLayout;
+
     private ViewOnClickListener mViewOnClickListener = new ViewOnClickListener() {
         @Override
         public void onClickedView(RecyclerView.ViewHolder holder, View transitionView, DetailFragment.DetailData detailData) {
@@ -36,6 +39,14 @@ public class MainActivity extends MVPActivity implements MainView {
             intent.putExtra("DetailData", detailData);
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, transitionView, MainActivity.TRANSITION_PIC);
             ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
+        }
+    };
+
+    private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            if (null == mMainPresenter) return;
+            mMainPresenter.loadMovie();
         }
     };
 
@@ -54,6 +65,8 @@ public class MainActivity extends MVPActivity implements MainView {
         setContentView(R.layout.activity_main);
         mMainAdapter = new MainAdapter();
         RecyclerView recyclerView = findViewById(R.id.recycler_View);
+        mRefreshLayout = findViewById(R.id.refresh_layout);
+        mRefreshLayout.setOnRefreshListener(mRefreshListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mMainAdapter);
     }
@@ -67,7 +80,6 @@ public class MainActivity extends MVPActivity implements MainView {
     @Override
     public void notifyAdapter(Map<Integer, MoviesResponse> model) {
         if (CollectionUtils.isNullOrEmpty(model)) return;
-
         for (Map.Entry<Integer, MoviesResponse> entry : model.entrySet()) {
             if (CollectionUtils.isNullOrEmpty(entry.getValue().results)){
                 // show
@@ -90,5 +102,19 @@ public class MainActivity extends MVPActivity implements MainView {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void dismissRefreshing() {
+        if (null == mRefreshLayout) return;
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showRefreshing() {
+        if (null != mRefreshLayout) {
+            mRefreshLayout.setRefreshing(false);
+            mRefreshLayout.setRefreshing(true);
+        }
     }
 }
