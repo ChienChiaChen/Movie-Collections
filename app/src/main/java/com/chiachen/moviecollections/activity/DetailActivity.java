@@ -19,7 +19,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        ViewCompat.setTransitionName(imageView, MainActivity.TRANSITION_PIC);
+        ViewCompat.setTransitionName(imageView, MainActivity.TRANSITION_PIC);// <- animation
         if (null != getIntent().getSerializableExtra("DetailData")) {
             DetailFragment.DetailData myObject = (DetailFragment.DetailData) getIntent().getSerializableExtra("DetailData");
             Glide.with(DetailActivity.this)

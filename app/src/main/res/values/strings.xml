@@ -3,4 +3,6 @@
     <string name="progress_loading">Loading</string>
 
     <string name="image_transition">image</string>
+
+    <string name="query_empty" translatable="false">Empty</string>
 </resources>

@@ -55,7 +55,8 @@ dependencies {
     compile "com.google.dagger:dagger:${libs.dagger}"// dagger2
     compile "com.google.dagger:dagger-android-support:${libs.dagger}"// dagger-android
     annotationProcessor "com.google.dagger:dagger-compiler:${libs.dagger}" // dagger2
-    annotationProcessor "com.google.dagger:dagger-android-processor:${libs.dagger}" // dagger-android
+    annotationProcessor "com.google.dagger:dagger-android-processor:${libs.dagger}"
+    // dagger-android
     compile "com.github.bumptech.glide:glide:${libs.glide}"
 
     // Room DB
