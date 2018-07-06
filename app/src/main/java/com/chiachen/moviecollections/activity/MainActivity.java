@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.adapter.MainAdapter;
+import com.chiachen.moviecollections.adapter.VerticalAdapter;
 import com.chiachen.moviecollections.adapter.ViewOnClickListener;
 import com.chiachen.moviecollections.base.MVPActivity;
 import com.chiachen.moviecollections.fragment.DetailFragment;
@@ -31,7 +32,7 @@ import dagger.android.AndroidInjection;
 public class MainActivity extends MVPActivity implements MainView {
     public static final String TRANSITION_PIC = "transitionPic";
 
-    private MainAdapter mMainAdapter;
+    private VerticalAdapter mVerticalAdapter;
     private SwipeRefreshLayout mRefreshLayout;
 
     private ViewOnClickListener mViewOnClickListener = new ViewOnClickListener() {
@@ -67,12 +68,12 @@ public class MainActivity extends MVPActivity implements MainView {
     protected void initUI() {
         setContentView(R.layout.activity_main);
         initToobar();
-        mMainAdapter = new MainAdapter();
+        mVerticalAdapter = new VerticalAdapter();
         RecyclerView recyclerView = findViewById(R.id.recycler_View);
         mRefreshLayout = findViewById(R.id.refresh_layout);
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mMainAdapter);
+        recyclerView.setAdapter(mVerticalAdapter);
     }
 
     private void initToobar() {
@@ -97,10 +98,8 @@ public class MainActivity extends MVPActivity implements MainView {
             }
         }
 
-        mMainAdapter.setItemOnClickListener(mViewOnClickListener);
-        // mMainAdapter.setPopularItem(null);
-        mMainAdapter.setUpcomingItem(model.get(MainAdapter.VERTICAL));
-        mMainAdapter.notifyDataSetChanged();
+        mVerticalAdapter.setItemOnClickListener(mViewOnClickListener);
+        mVerticalAdapter.setData(model.get(MainAdapter.VERTICAL));
     }
 
     @Override

@@ -11,16 +11,30 @@ import com.bumptech.glide.Glide;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.models.MoviesResponse;
+import com.chiachen.moviecollections.models.Result;
 import com.chiachen.moviecollections.network.config.BaseUrls;
 import com.chiachen.moviecollections.utils.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyViewHolder> {
-    MoviesResponse mPopularResponse;
+    // MoviesResponse mPopularResponse;
     ViewOnClickListener mItemOnClickListener;
+    public List<Result> mResults = new ArrayList<>();
 
     public VerticalAdapter(MoviesResponse popularResponse) {
-        mPopularResponse = popularResponse;
+        // mPopularResponse = popularResponse;
+    }
+
+    public VerticalAdapter() {
+
+    }
+
+    public void setData(MoviesResponse data) {
+        mResults.addAll(data.results);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -31,14 +45,13 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.title.setText(mPopularResponse.results.get(position).title);
-        // holder.description.setText(mPopularResponse.results.get(position).overview);
-        holder.pubDate.setText(mPopularResponse.results.get(position).releaseDate);
+        holder.title.setText(mResults.get(position).title);
+        holder.pubDate.setText(mResults.get(position).releaseDate);
 
         // FIXME: 2018/05/20 Off line
         // Placeholder
         Glide.with(holder.itemView.getContext())
-                .load(BaseUrls.MOVIE_IMAGE_URL + mPopularResponse.results.get(position).posterPath)
+                .load(BaseUrls.MOVIE_IMAGE_URL + mResults.get(position).posterPath)
                 .into(holder.image);
 
 
@@ -50,10 +63,10 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
 
             private DetailFragment.DetailData getDetailData(int position) {
                 DetailFragment.DetailData data = new DetailFragment.DetailData(
-                        mPopularResponse.results.get(position).posterPath,
-                        mPopularResponse.results.get(position).title,
-                        mPopularResponse.results.get(position).overview,
-                        mPopularResponse.results.get(position).releaseDate
+                        mResults.get(position).posterPath,
+                        mResults.get(position).title,
+                        mResults.get(position).overview,
+                        mResults.get(position).releaseDate
                 );
                 return data;
             }
@@ -62,10 +75,10 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.MyView
 
     @Override
     public int getItemCount() {
-        if (null == mPopularResponse || CollectionUtils.isNullOrEmpty(mPopularResponse.results)) {
+        if (CollectionUtils.isNullOrEmpty(mResults)) {
             return 0;
         }
-        return mPopularResponse.results.size();
+        return mResults.size();
     }
 
     public void setItemOnClickListener(ViewOnClickListener itemOnClickListener) {
