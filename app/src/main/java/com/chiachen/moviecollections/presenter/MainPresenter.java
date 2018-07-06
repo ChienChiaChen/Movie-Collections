@@ -39,25 +39,25 @@ public class MainPresenter extends BasePresenter<MainView> {
         mMovieLocalRepo = movieLocalRepo;
     }
 
-    public void loadMovie() {
+    public void loadMovie(int pageNumber) {
         if (isViewAttached()) {
             getView().showRefreshing();
         }
 
-        addSubscription(getDataFromRemote(), getObserver());
+        addSubscription(getDataFromRemote(pageNumber), getObserver());
     }
 
     private Observable<Map<Integer, MoviesResponse>> getDataFromLocal() {
         return mMovieLocalRepo.getMovies();
     }
 
-    private Observable getDataFromRemote() {
+    private Observable getDataFromRemote(int pageNumber) {
         return Observable
-                .zip(getPopularListObservable(), getUpcomingListObservable(), new BiFunction<MoviesResponse, MoviesResponse, Map<Integer, MoviesResponse>>() {
+                .zip(getPopularListObservable(pageNumber), getUpcomingListObservable(), new BiFunction<MoviesResponse, MoviesResponse, Map<Integer, MoviesResponse>>() {
                     @Override
                     public Map<Integer, MoviesResponse> apply(MoviesResponse moviesPopularListResponse, MoviesResponse moviesUpcomingListResponse) throws Exception {
-                        // mMap.put(MainAdapter.HORIZONTAL, moviesUpcomingListResponse);
                         mMap.put(MainAdapter.VERTICAL, moviesPopularListResponse);
+                        // mMap.put(MainAdapter.HORIZONTAL, moviesUpcomingListResponse);
                         return mMap;
                     }
                 })
@@ -88,8 +88,8 @@ public class MainPresenter extends BasePresenter<MainView> {
         };
     }
 
-    private Observable<MoviesResponse> getPopularListObservable() {
-        return mApiService.getPopularMovies(BuildConfig.MOVIE_API_KEY, "en-US", "1");
+    private Observable<MoviesResponse> getPopularListObservable(int pageNumber) {
+        return mApiService.getPopularMovies(BuildConfig.MOVIE_API_KEY, "en-US", String.valueOf(pageNumber));
     }
 
     private Observable<MoviesResponse> getUpcomingListObservable() {

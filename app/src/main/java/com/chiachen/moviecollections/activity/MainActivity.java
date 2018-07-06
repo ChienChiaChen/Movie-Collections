@@ -31,9 +31,13 @@ import dagger.android.AndroidInjection;
 
 public class MainActivity extends MVPActivity implements MainView {
     public static final String TRANSITION_PIC = "transitionPic";
-
+    public static final int INIT_PAGE_NUM =1;
+    private final int VISIBLE_OFFSET = 1;
     private VerticalAdapter mVerticalAdapter;
     private SwipeRefreshLayout mRefreshLayout;
+    private LinearLayoutManager mLinearLayoutManager;
+    private int lastVisibleItem, totalItemCount;
+    private int mPageNumber = INIT_PAGE_NUM;
 
     private ViewOnClickListener mViewOnClickListener = new ViewOnClickListener() {
         @Override
@@ -50,7 +54,7 @@ public class MainActivity extends MVPActivity implements MainView {
         @Override
         public void onRefresh() {
             if (null == mMainPresenter) return;
-            mMainPresenter.loadMovie();
+            mMainPresenter.loadMovie(mPageNumber);
         }
     };
 
@@ -61,7 +65,7 @@ public class MainActivity extends MVPActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        mMainPresenter.loadMovie();
+        mMainPresenter.loadMovie(mPageNumber);
     }
 
     @Override
@@ -72,8 +76,21 @@ public class MainActivity extends MVPActivity implements MainView {
         RecyclerView recyclerView = findViewById(R.id.recycler_View);
         mRefreshLayout = findViewById(R.id.refresh_layout);
         mRefreshLayout.setOnRefreshListener(mRefreshListener);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setAdapter(mVerticalAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                if (!mRefreshLayout.isRefreshing() && totalItemCount <= (lastVisibleItem + VISIBLE_OFFSET)) {
+                    mPageNumber++;
+                    mRefreshListener.onRefresh();
+                }
+            }
+        });
     }
 
     private void initToobar() {
