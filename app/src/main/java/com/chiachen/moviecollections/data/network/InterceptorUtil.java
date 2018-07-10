@@ -1,7 +1,7 @@
-package com.chiachen.moviecollections.network;
+package com.chiachen.moviecollections.data.network;
 
 import com.chiachen.moviecollections.BuildConfig;
-import com.chiachen.moviecollections.network.config.HttpConfig;
+import com.chiachen.moviecollections.data.network.config.HttpConfig;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;

@@ -1,4 +1,4 @@
-package com.chiachen.moviecollections.db;
+package com.chiachen.moviecollections.data.db;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -15,9 +15,7 @@ import java.util.List;
 
 @Dao
 public interface MovieDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<Movie> items);
+    @Insert(onConflict = OnConflictStrategy.REPLACE) void insertAll(List<Movie> items);
 
-    @Query(DBConfiguration.MOVIES_SELECT_ALL)
-    List<Movie> getAll();
+    @Query(DBConfiguration.MOVIES_SELECT_ALL) List<Movie> getAll();
 }

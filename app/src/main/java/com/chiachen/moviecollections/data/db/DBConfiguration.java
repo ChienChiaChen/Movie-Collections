@@ -1,4 +1,4 @@
-package com.chiachen.moviecollections.db;
+package com.chiachen.moviecollections.data.db;
 
 /**
  * Created by jianjiacheng on 2018/05/17.

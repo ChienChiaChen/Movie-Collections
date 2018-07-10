@@ -1,4 +1,4 @@
-package com.chiachen.moviecollections.db;
+package com.chiachen.moviecollections.data.db;
 
 import com.chiachen.moviecollections.adapter.MainAdapter;
 import com.chiachen.moviecollections.models.Movie;

@@ -5,11 +5,11 @@ import android.support.annotation.NonNull;
 import com.chiachen.moviecollections.BuildConfig;
 import com.chiachen.moviecollections.adapter.MainAdapter;
 import com.chiachen.moviecollections.base.BasePresenter;
-import com.chiachen.moviecollections.db.MovieLocalRepo;
+import com.chiachen.moviecollections.data.db.MovieLocalRepo;
 import com.chiachen.moviecollections.models.MoviesResponse;
-import com.chiachen.moviecollections.network.ApiCallback;
-import com.chiachen.moviecollections.network.ApiService;
-import com.chiachen.moviecollections.network.AppSchedulerProvider;
+import com.chiachen.moviecollections.data.network.ApiCallback;
+import com.chiachen.moviecollections.data.network.ApiService;
+import com.chiachen.moviecollections.data.network.AppSchedulerProvider;
 import com.chiachen.moviecollections.view.MainView;
 
 import java.util.HashMap;

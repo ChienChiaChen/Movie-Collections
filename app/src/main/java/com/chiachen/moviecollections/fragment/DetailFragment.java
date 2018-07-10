@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.base.MVPFragment;
-import com.chiachen.moviecollections.network.config.BaseUrls;
+import com.chiachen.moviecollections.data.network.config.BaseUrls;
 
 import java.io.Serializable;
 

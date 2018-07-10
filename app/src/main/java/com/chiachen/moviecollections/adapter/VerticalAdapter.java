@@ -12,7 +12,7 @@ import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.models.MoviesResponse;
 import com.chiachen.moviecollections.models.Result;
-import com.chiachen.moviecollections.network.config.BaseUrls;
+import com.chiachen.moviecollections.data.network.config.BaseUrls;
 import com.chiachen.moviecollections.utils.CollectionUtils;
 
 import java.util.ArrayList;

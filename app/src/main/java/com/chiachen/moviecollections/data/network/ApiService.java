@@ -1,4 +1,4 @@
-package com.chiachen.moviecollections.network;
+package com.chiachen.moviecollections.data.network;
 
 import com.chiachen.moviecollections.models.MoviesResponse;
 

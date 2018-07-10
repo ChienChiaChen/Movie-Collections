@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.fragment.DetailFragment;
 import com.chiachen.moviecollections.models.MoviesResponse;
-import com.chiachen.moviecollections.network.config.BaseUrls;
+import com.chiachen.moviecollections.data.network.config.BaseUrls;
 
 
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {

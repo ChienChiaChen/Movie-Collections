@@ -1,4 +1,4 @@
-package com.chiachen.moviecollections.network.config;
+package com.chiachen.moviecollections.data.network.config;
 
 /**
  * Created by jianjiacheng on 15/03/2018.

@@ -1,8 +1,8 @@
 package com.chiachen.moviecollections.di.module;
 
 import com.chiachen.moviecollections.activity.MainActivity;
-import com.chiachen.moviecollections.db.MovieLocalRepo;
-import com.chiachen.moviecollections.network.ApiService;
+import com.chiachen.moviecollections.data.db.MovieLocalRepo;
+import com.chiachen.moviecollections.data.network.ApiService;
 import com.chiachen.moviecollections.presenter.MainPresenter;
 import com.chiachen.moviecollections.view.MainView;
 

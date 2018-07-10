@@ -1,7 +1,7 @@
-package com.chiachen.moviecollections.network;
+package com.chiachen.moviecollections.data.network;
 
 import com.chiachen.moviecollections.base.BaseView;
-import com.chiachen.moviecollections.network.exception.NoNetworkException;
+import com.chiachen.moviecollections.data.network.exception.NoNetworkException;
 
 import org.json.JSONObject;
 

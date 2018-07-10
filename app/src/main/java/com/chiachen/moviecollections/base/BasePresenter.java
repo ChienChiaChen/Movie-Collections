@@ -2,8 +2,8 @@ package com.chiachen.moviecollections.base;
 
 import android.support.annotation.NonNull;
 
-import com.chiachen.moviecollections.network.ApiService;
-import com.chiachen.moviecollections.network.AppSchedulerProvider;
+import com.chiachen.moviecollections.data.network.ApiService;
+import com.chiachen.moviecollections.data.network.AppSchedulerProvider;
 
 import java.lang.ref.WeakReference;
 

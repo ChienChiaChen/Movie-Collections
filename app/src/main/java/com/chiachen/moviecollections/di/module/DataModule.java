@@ -2,10 +2,10 @@ package com.chiachen.moviecollections.di.module;
 
 import android.arch.persistence.room.Room;
 
-import com.chiachen.moviecollections.db.DBConfiguration;
-import com.chiachen.moviecollections.db.LocalDB;
-import com.chiachen.moviecollections.db.MovieLocalRepo;
-import com.chiachen.moviecollections.db.MovieLocalRepoImpl;
+import com.chiachen.moviecollections.data.db.DBConfiguration;
+import com.chiachen.moviecollections.data.db.LocalDB;
+import com.chiachen.moviecollections.data.db.MovieLocalRepo;
+import com.chiachen.moviecollections.data.db.MovieLocalRepoImpl;
 import com.chiachen.moviecollections.global.BaseApplication;
 
 import javax.inject.Singleton;

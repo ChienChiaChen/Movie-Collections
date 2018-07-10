@@ -5,11 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.chiachen.moviecollections.global.BaseApplication;
-import com.chiachen.moviecollections.network.ApiService;
-import com.chiachen.moviecollections.network.InterceptorUtil;
-import com.chiachen.moviecollections.network.config.BaseUrls;
-import com.chiachen.moviecollections.network.config.HttpConfig;
-import com.chiachen.moviecollections.network.exception.NoNetworkException;
+import com.chiachen.moviecollections.data.network.ApiService;
+import com.chiachen.moviecollections.data.network.InterceptorUtil;
+import com.chiachen.moviecollections.data.network.config.BaseUrls;
+import com.chiachen.moviecollections.data.network.config.HttpConfig;
+import com.chiachen.moviecollections.data.network.exception.NoNetworkException;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import java.io.IOException;

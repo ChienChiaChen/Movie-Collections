@@ -1,4 +1,4 @@
-package com.chiachen.moviecollections.network.exception;
+package com.chiachen.moviecollections.data.network.exception;
 
 /**
  * Created by jianjiacheng on 2018/05/17.

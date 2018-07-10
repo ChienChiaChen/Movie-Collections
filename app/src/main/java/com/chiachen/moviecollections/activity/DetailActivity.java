@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chiachen.moviecollections.R;
 import com.chiachen.moviecollections.fragment.DetailFragment;
-import com.chiachen.moviecollections.network.config.BaseUrls;
+import com.chiachen.moviecollections.data.network.config.BaseUrls;
 
 // DesignSample
 public class DetailActivity extends AppCompatActivity {

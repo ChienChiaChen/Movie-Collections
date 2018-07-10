@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.chiachen.moviecollections.db.DBConfiguration;
+import com.chiachen.moviecollections.data.db.DBConfiguration;
 
 /**
  * Created by jianjiacheng on 2018/05/17.

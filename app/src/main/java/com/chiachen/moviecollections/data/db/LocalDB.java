@@ -1,4 +1,4 @@
-package com.chiachen.moviecollections.db;
+package com.chiachen.moviecollections.data.db;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
