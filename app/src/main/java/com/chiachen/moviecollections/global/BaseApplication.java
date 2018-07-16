@@ -30,9 +30,9 @@ public class BaseApplication extends Application implements HasActivityInjector 
     @Override
     public void onCreate() {
         super.onCreate();
+        initAppComponent();
         initResource();
         initStetho();
-        initAppComponent();
     }
 
     private void initStetho() {
@@ -44,11 +44,7 @@ public class BaseApplication extends Application implements HasActivityInjector 
     }
 
     private void initAppComponent() {
-        DaggerApplicationComponent
-                .builder()
-                .application(this)
-                .build()
-                .inject(this);
+        DaggerApplicationComponent.builder().application(this).build().inject(this);
     }
 
     private void initResource() {

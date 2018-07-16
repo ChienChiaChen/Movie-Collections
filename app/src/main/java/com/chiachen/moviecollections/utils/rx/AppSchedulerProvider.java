@@ -1,21 +1,20 @@
-package com.chiachen.moviecollections.data.network;
+package com.chiachen.moviecollections.utils.rx;
 
 
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class AppSchedulerProvider {
-
-    public static Scheduler ui() {
+public class AppSchedulerProvider implements SchedulerProvider {
+    public Scheduler ui() {
         return AndroidSchedulers.mainThread();
     }
 
-    public static Scheduler computation() {
+    public Scheduler computation() {
         return Schedulers.computation();
     }
 
-    public static Scheduler io() {
+    public Scheduler io() {
         return Schedulers.io();
     }
 }

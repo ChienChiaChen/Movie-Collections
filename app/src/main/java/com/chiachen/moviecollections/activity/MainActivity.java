@@ -65,6 +65,7 @@ public class MainActivity extends MVPActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        mMainPresenter.attachView(this);
         mMainPresenter.loadMovie(mPageNumber);
     }
 

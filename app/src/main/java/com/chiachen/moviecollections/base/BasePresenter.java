@@ -2,10 +2,12 @@ package com.chiachen.moviecollections.base;
 
 import android.support.annotation.NonNull;
 
-import com.chiachen.moviecollections.data.network.ApiService;
-import com.chiachen.moviecollections.data.network.AppSchedulerProvider;
+import com.chiachen.moviecollections.data.DataManager;
+import com.chiachen.moviecollections.utils.rx.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -14,8 +16,16 @@ import io.reactivex.observers.DisposableObserver;
 
 public class BasePresenter<V> {
     private WeakReference<V> mView;
-    private CompositeDisposable mCompositeDisposable;
-    protected ApiService mApiService;
+    protected SchedulerProvider mSchedulerProvider;
+    protected CompositeDisposable mCompositeDisposable;
+    protected DataManager mDataManager;
+
+    @Inject
+    public BasePresenter(SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable, DataManager dataManager) {
+        mSchedulerProvider = schedulerProvider;
+        mCompositeDisposable = compositeDisposable;
+        mDataManager = dataManager;
+    }
 
     public void attachView(@NonNull V view) {
         mView = new WeakReference<>(view);
@@ -40,13 +50,21 @@ public class BasePresenter<V> {
     }
 
     public void addSubscription(Observable observable, DisposableObserver observer) {
-        if (null == mCompositeDisposable) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-
         mCompositeDisposable.add(observer);
-        observable.subscribeOn(AppSchedulerProvider.io())
-                .observeOn(AppSchedulerProvider.ui())
+        observable.subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
                 .subscribeWith(observer);
+    }
+
+    public SchedulerProvider getSchedulerProvider() {
+        return mSchedulerProvider;
+    }
+
+    public CompositeDisposable getCompositeDisposable() {
+        return mCompositeDisposable;
+    }
+
+    public DataManager getDataManager() {
+        return mDataManager;
     }
 }

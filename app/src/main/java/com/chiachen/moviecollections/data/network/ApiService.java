@@ -13,17 +13,12 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @GET("/3/movie/popular")
-    Observable<MoviesResponse> getPopularMovies(@Query("api_key") String apiKey,
-                                                @Query("language")String lang,
-                                                @Query("page")String pageIndex);
+    Observable<MoviesResponse> getPopularMovies(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") String pageIndex);
 
     @GET("/3/movie/upcoming")
-    Observable<MoviesResponse> getUpcomingMovies(@Query("api_key") String apiKey,
-                                                 @Query("language")String lang,
-                                                 @Query("page")String pageIndex);
+    Observable<MoviesResponse> getUpcomingMovies(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") String pageIndex);
 
     @GET("/3/search/movie")
-    Observable<MoviesResponse> searchMovies(@Query("api_key") String apiKey,
-                                            @Query("query") String query);
+    Observable<MoviesResponse> searchMovies(@Query("api_key") String apiKey, @Query("query") String query);
 
 }

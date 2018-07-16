@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.chiachen.moviecollections.global.BaseApplication;
 import com.chiachen.moviecollections.data.network.ApiService;
 import com.chiachen.moviecollections.data.network.InterceptorUtil;
 import com.chiachen.moviecollections.data.network.config.BaseUrls;
@@ -35,9 +34,9 @@ public class NetModule {
 
     @Provides
     @Singleton
-    public boolean IsNetworkConnected(BaseApplication baseApplication) {
+    public boolean IsNetworkConnected(Context context) {
         try {
-            ConnectivityManager cm = (ConnectivityManager) baseApplication.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activityNetwork = cm.getActiveNetworkInfo();
             return activityNetwork != null && activityNetwork.isConnectedOrConnecting();
         } catch (Exception e) {
@@ -47,11 +46,11 @@ public class NetModule {
 
     @Provides
     @Singleton
-    public Interceptor provideNetworkCheckerInterceptor(final BaseApplication baseApplication) {
+    public Interceptor provideNetworkCheckerInterceptor(final Context context) {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                if (IsNetworkConnected(baseApplication)) {
+                if (IsNetworkConnected(context)) {
                     return chain.proceed(chain.request());
                 } else {
                     throw new NoNetworkException();
@@ -62,11 +61,11 @@ public class NetModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(Interceptor networkInterceptor,BaseApplication baseApplication) {
+    public OkHttpClient provideOkHttpClient(Interceptor networkInterceptor, Context context) {
         return new OkHttpClient.Builder()
                 .addInterceptor(InterceptorUtil.getLoggingInterceptor())
                 .addInterceptor(networkInterceptor)
-                .addInterceptor(new ChuckInterceptor(baseApplication))
+                .addInterceptor(new ChuckInterceptor(context))
                 .addNetworkInterceptor(InterceptorUtil.getStethoInterceptor())
                 .retryOnConnectionFailure(HttpConfig.NEED_TO_RETRY)
                 .writeTimeout(HttpConfig.DEFAULT_TIMEOUT, TimeUnit.SECONDS)

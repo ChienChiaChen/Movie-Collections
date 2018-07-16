@@ -12,6 +12,5 @@ public interface DBConfiguration {
     String MOVIES_RELEASE_DATE= "release_date" ;
     String MOVIES_IMAGE = "image";
     String MOVIES_OVERVIEW = "overview";
-
     String MOVIES_SELECT_ALL = "SELECT * FROM " + DBConfiguration.MOVIES_TABLE_NAME;
 }

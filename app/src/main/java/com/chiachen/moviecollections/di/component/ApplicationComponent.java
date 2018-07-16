@@ -1,11 +1,11 @@
 package com.chiachen.moviecollections.di.component;
 
-import com.chiachen.moviecollections.data.db.MovieLocalRepo;
+import android.content.Context;
+
 import com.chiachen.moviecollections.di.module.ApplicationModule;
 import com.chiachen.moviecollections.di.module.DataModule;
 import com.chiachen.moviecollections.di.module.NetModule;
 import com.chiachen.moviecollections.global.BaseApplication;
-import com.chiachen.moviecollections.data.network.ApiService;
 
 import javax.inject.Singleton;
 
@@ -30,14 +30,9 @@ import dagger.android.AndroidInjector;
 public interface ApplicationComponent extends AndroidInjector<BaseApplication> {
     @Component.Builder
     interface Builder {
-        @BindsInstance
-        Builder application(BaseApplication baseApplication);
+        @BindsInstance Builder application(Context context);
         ApplicationComponent build();
     }
 
-    void inject(BaseApplication app);
-
-    MovieLocalRepo getMovieLocalRepo();
-
-    ApiService getApiService();
+    void inject(Context context);
 }
